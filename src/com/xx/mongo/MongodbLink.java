@@ -21,7 +21,8 @@ public class MongodbLink {
 		Map userMap = null;
 		try {
 			// 连接mongo
-			mongo = new Mongo("192.168.8.107", 27017);
+//			mongo = new Mongo("192.168.8.107", 27017);
+			mongo = new Mongo("192.168.1.111", 27017);
 			// 选择数据库
 			db = mongo.getDB("admin");
 			// 校验用户
@@ -37,7 +38,12 @@ public class MongodbLink {
 				System.out.println("数据集大小：" + dbCollection.getStats().size());
 			}
 //			queryAll(dbCollection); //查询所有记录
-			queryByContent(dbCollection); //按条件查询
+//			queryByContent(dbCollection); //按条件查询
+			DBObject dbObject=new BasicDBObject();
+			dbObject.put("name", "lisi");
+			dbObject.put("age", 18);
+			dbObject.put("sex", "男");
+			dbCollection.insert(dbObject);
 //			System.out.println(dbCollection.findAndRemove(new BasicDBObject("age",21)));
 //			System.out.println(dbCollection.findAndModify(new BasicDBObject("age",22),new BasicDBObject("name","zhangxiaoping")).toMap());
 //			System.out.println(dbCollection.findAndModify(new BasicDBObject("age",24),new BasicDBObject("$set",new BasicDBObject("name","zhangxiaoxiao"))));
