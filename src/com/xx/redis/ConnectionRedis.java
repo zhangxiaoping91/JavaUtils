@@ -8,12 +8,14 @@ import redis.clients.jedis.Jedis;
 
 public class ConnectionRedis {
 	public static void main(String[] args) {
-//		Jedis jedis=new Jedis("192.168.1.111", 6379);
-		Jedis jedis=new Jedis("192.168.8.105", 6379);
+		Jedis jedis=new Jedis("192.168.1.111", 6379);
+//		jedis.auth("zhangxp");
+//		Jedis jedis=new Jedis("192.168.8.105", 6379);
 		System.out.println("connection to server successfully");
 		System.out.println("server is running:"+jedis.ping());
+		jedis.flushAll();
 		//set redis
-		jedis.set("name", "redis");
+		jedis.set("redis_name", "redis");
 		System.out.println("Stored string in redis£º"+jedis.get("name"));
 		//list ÁÐ±í
 		jedis.lpush("redisList", "2.0");
