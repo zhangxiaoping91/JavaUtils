@@ -7,8 +7,42 @@ import java.util.Set;
 import redis.clients.jedis.Jedis;
 
 public class ConnectionRedis {
+	private static Jedis jedis=new Jedis("123.57.211.130", 6379);
+
 	public static void main(String[] args) {
-		Jedis jedis=new Jedis("192.168.1.111", 6379);
+	}
+
+	private static void setOperate() {
+		//		jedis.sadd("sfriend", "lanlan");
+		//		jedis.sadd("sfriend", "yangyang");
+		//		jedis.sadd("sfriend", "huahua");
+		//		jedis.srem("sfriend", "lanlan");
+		//		System.out.println(jedis.spop("sfriend"));
+		//		jedis.del("sfriend");
+		//		Set<String> set=jedis.sinter("sfriend","efriend");
+				Set<String> set=jedis.sunion("sfriend","efriend");
+		//		Set<String> set= jedis.smembers("sfriend");
+				Iterator<String>it= set.iterator();
+				while(it.hasNext())
+				{
+					System.out.println(it.next());
+				}
+	}
+
+	private static void listOperate() {
+		//		jedis.rpush("friend", "zhangsan");
+		//		jedis.lpush("friend", "zhangxiaoping");
+				jedis.lpop("friend");
+				jedis.rpop("friend");
+				List<String> fList= jedis.lrange("friend", 0, -1);
+				for(String s:fList)
+				{
+					System.out.println(s);
+				}
+	}
+
+	private static void localHostTest() {
+		Jedis jedis=new Jedis("123.57.211.130", 6379);
 //		jedis.auth("zhangxp");
 //		Jedis jedis=new Jedis("192.168.8.105", 6379);
 		System.out.println("connection to server successfully");
