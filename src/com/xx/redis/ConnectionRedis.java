@@ -1,8 +1,13 @@
 package com.xx.redis;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import com.xx.bean.Student;
+import com.xx.utils.SerializableUtils;
 
 import redis.clients.jedis.Jedis;
 
@@ -10,6 +15,64 @@ public class ConnectionRedis {
 	private static Jedis jedis=new Jedis("123.57.211.130", 6379);
 
 	public static void main(String[] args) {
+		Student stu1=new Student();
+		stu1.setName("zhangsan");
+		stu1.setAge("20");
+		stu1.setSex("female");
+		
+		Student stu2 =new Student();
+		stu2.setName("lisi");
+		stu2.setAge("16");
+		stu2.setSex("male");
+		
+		Student stu3 =new Student();
+		stu3.setName("wangwu");
+		stu3.setAge("23");
+		stu3.setSex("male");
+		
+		Map stuMap=new HashMap();
+		stuMap.put("stu1".getBytes(), SerializableUtils.serialize(stu1));
+		stuMap.put("stu2".getBytes(), SerializableUtils.serialize(stu2));
+		stuMap.put("stu3".getBytes(), SerializableUtils.serialize(stu3));
+		
+		jedis.hmset("stu".getBytes(), stuMap);
+//		Map map=jedis.hgetAll("stu".getBytes());
+
+	byte[] student1= jedis.hget("stu".getBytes(), "stu1".getBytes());
+//	byte[] student1= map.get("stu1".getBytes()).toString().getBytes();
+		Student student= (Student) SerializableUtils.unserialize(student1);
+		System.out.println(student.toString());
+
+
+		
+		
+//		jedis.set("stu1".getBytes(), SerializableUtils.serialize(student1));
+//		byte[] stu= jedis.get("stu1".getBytes());
+//		Student student= (Student) SerializableUtils.unserialize(stu);
+//		System.out.println(student.toString());
+		
+//		System.out.println(SerializableUtils.serialize(stu1));
+//		System.out.println(SerializableUtils.unserialize("[B@184c9860".getBytes()));
+		
+	}
+
+	private static void hashOperate() {
+		jedis.hset("hfriend", "age", "25");
+		List<String> list = jedis.hmget("hfriend", "name" ,"age","sex");
+		Set<String> set =jedis.hkeys("hfriend");
+		Long len= jedis.hlen("hfriend");
+//		System.out.println(len);
+//		List<String> list= jedis.hvals("hfriend");
+		for(String str:list)
+		{
+			System.out.println(str);
+		}
+		
+		Iterator< String> iterator=set.iterator();
+		while(iterator.hasNext())
+		{
+			System.out.println(iterator.next());
+		}
 	}
 
 	private static void setOperate() {
