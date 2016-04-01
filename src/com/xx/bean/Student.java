@@ -2,7 +2,7 @@ package com.xx.bean;
 
 import java.io.Serializable;
 
-public class Student implements Serializable {
+public class Student implements Serializable,Comparable<Student> {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private String age;
@@ -29,6 +29,18 @@ public class Student implements Serializable {
 	public String toString() {
 		return "Student [name=" + name + ", age=" + age + ", sex=" + sex + "]";
 	}
+	@Override
+	public int compareTo(Student o) {
+		if(o!=null)
+		{
+			if(Double.parseDouble(this.getAge())>Double.parseDouble(o.getAge()))
+					return 1;
+			else if(Double.parseDouble(this.getAge())==Double.parseDouble(o.getAge()))
+					return 0;
+		}
+		return -1;
+	}
+	
 	
 	
 	

@@ -1,5 +1,7 @@
 package com.xx.redis;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,11 +12,42 @@ import com.xx.bean.Student;
 import com.xx.utils.SerializableUtils;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Protocol.Command;
+import redis.clients.jedis.SortingParams;
 
 public class ConnectionRedis {
 	private static Jedis jedis=new Jedis("123.57.211.130", 6379);
 
 	public static void main(String[] args) {
+//		jedis.lpush("score", "78");
+//		jedis.lpush("score", "69");
+//		jedis.lpush("score", "72");
+//		jedis.lpush("score", "60");
+//		jedis.lpush("score", "84");
+		SortingParams sortingParameters=new SortingParams();
+//		sortingParameters.desc();
+		sortingParameters.alpha();
+//		List<String> list= jedis.sort("score");
+		List<String> list=jedis.sort("score", sortingParameters);
+//		jedis.sort(key, sortingParameters)
+//		List<String> list= jedis.lrange("score", 0, -1);
+		for(String str:list)
+		{
+			System.out.println(str);
+		}
+		
+		List<String> stulist= jedis.hvals("stu");
+		List<byte[] > stub= jedis.hvals("stu".getBytes());
+		for(byte[] b:stub)
+		{
+			Student student= (Student)SerializableUtils.unserialize(b);
+			System.out.println(student.toString());
+		}
+		System.out.println(stulist.size());
+		
+	}
+
+	private static void hashStudent() {
 		Student stu1=new Student();
 		stu1.setName("zhangsan");
 		stu1.setAge("20");
@@ -35,13 +68,24 @@ public class ConnectionRedis {
 		stuMap.put("stu2".getBytes(), SerializableUtils.serialize(stu2));
 		stuMap.put("stu3".getBytes(), SerializableUtils.serialize(stu3));
 		
-		jedis.hmset("stu".getBytes(), stuMap);
+//		jedis.hmset("stu".getBytes(), stuMap);
 //		Map map=jedis.hgetAll("stu".getBytes());
-
-	byte[] student1= jedis.hget("stu".getBytes(), "stu1".getBytes());
+		List<Student> stuList=new ArrayList<Student>();
+		for(int i=1;i<4;i++)
+		{
+			String key="stu";
+			key=key+i;
+			byte[] student1= jedis.hget("stu".getBytes(), key.getBytes());
+			Student student= (Student) SerializableUtils.unserialize(student1);
+			stuList.add(student);
+//			System.out.println(student.toString());
+		}
+		java.util.Collections.sort(stuList);
+		for(Student s:stuList)
+		{
+			System.out.println(s.toString());
+		}
 //	byte[] student1= map.get("stu1".getBytes()).toString().getBytes();
-		Student student= (Student) SerializableUtils.unserialize(student1);
-		System.out.println(student.toString());
 
 
 		
@@ -53,7 +97,6 @@ public class ConnectionRedis {
 		
 //		System.out.println(SerializableUtils.serialize(stu1));
 //		System.out.println(SerializableUtils.unserialize("[B@184c9860".getBytes()));
-		
 	}
 
 	private static void hashOperate() {
