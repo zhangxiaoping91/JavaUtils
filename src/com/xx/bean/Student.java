@@ -7,6 +7,15 @@ public class Student implements Serializable,Comparable<Student> {
 	private String name;
 	private String age;
 	private String sex;
+	
+	public Student(){}
+	public Student(String name,String age,String sex)
+	{
+		this.name=name;
+		this.age=age;
+		this.sex=sex;
+	}
+	
 	public String getName() {
 		return name;
 	}

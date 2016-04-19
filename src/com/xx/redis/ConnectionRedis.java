@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Test;
+
 import com.xx.bean.Student;
 import com.xx.utils.SerializableUtils;
 
@@ -35,16 +37,18 @@ public class ConnectionRedis {
 		{
 			System.out.println(str);
 		}
-		
-		List<String> stulist= jedis.hvals("stu");
-		List<byte[] > stub= jedis.hvals("stu".getBytes());
-		for(byte[] b:stub)
-		{
-			Student student= (Student)SerializableUtils.unserialize(b);
-			System.out.println(student.toString());
-		}
-		System.out.println(stulist.size());
-		
+//		
+//		List<String> stulist= jedis.hvals("stu");
+//		List<byte[] > stub= jedis.hvals("stu".getBytes());
+//		for(byte[] b:stub)
+//		{
+//			Student student= (Student)SerializableUtils.unserialize(b);
+//			System.out.println(student.toString());
+//		}
+//		System.out.println(stulist.size());
+		Student student=new Student("xiaoxia", "23", "male");
+		jedis.set(student.getName(), student.toString());
+//		hashStudent();
 	}
 
 	private static void hashStudent() {
@@ -68,8 +72,8 @@ public class ConnectionRedis {
 		stuMap.put("stu2".getBytes(), SerializableUtils.serialize(stu2));
 		stuMap.put("stu3".getBytes(), SerializableUtils.serialize(stu3));
 		
-//		jedis.hmset("stu".getBytes(), stuMap);
-//		Map map=jedis.hgetAll("stu".getBytes());
+		jedis.hmset("stu".getBytes(), stuMap);
+		Map map=jedis.hgetAll("stu".getBytes());
 		List<Student> stuList=new ArrayList<Student>();
 		for(int i=1;i<4;i++)
 		{
