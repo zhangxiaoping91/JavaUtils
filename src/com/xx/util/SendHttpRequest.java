@@ -26,21 +26,21 @@ public class SendHttpRequest {
 		StringBuilder sb = new StringBuilder();
 		try
 		{
-			URL url=new URL(data);
+			URL url=new URL(requrl);
 			con=(HttpURLConnection) url.openConnection();
-
 			con.setDoInput(true);
 			con.setDoOutput(true);
 			con.setRequestMethod("POST");
 //			con.setRequestProperty("Content-Type", "text/xml");
 			con.setUseCaches(false);
 			out=con.getOutputStream();
+			out.write(data.getBytes());
 			BufferedReader in = null;
 			
 //			out.write(data.getBytes());
 			try
 			{
-				in = new BufferedReader(new InputStreamReader(con.getInputStream(), "GBK"));
+				in = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
 				String str = null;
 				while ((str = in.readLine()) != null)
 				{
@@ -76,14 +76,16 @@ public class SendHttpRequest {
 	}	
 	
 	public static void main(String[] args) {
-		String url="http://115.28.109.25/O2OV2_test/seller/index.php?m=ApiPay&a=get_cashier_result&";
-		String plain="RespCode=00|MsgCode=null|Message=null|BoundNo=123|MerchNo=456|MercName=zhangs|AcNo=789|result=0|RefuseReason=图片不正确";
-		String strPfx = "E://merchant.pfx";
-		String strPassword = "test";
-		PrivateKey pk=GetPrivateKey.GetPvkformPfx(strPfx, strPassword);
-		String signature=GetPrivateKey.signData(pk, plain, alg);
-		url=url+"plain="+plain+"&signature="+signature;
-		String returnData=sendRequestHttp(url, "");
+		String url="http://172.16.2.84:8080/dzf_admin2/app/busidata!dealData.action?operate=201";
+//		String plain="RespCode=00|MsgCode=null|Message=null|BoundNo=123|MerchNo=456|MercName=zhangs|AcNo=789|result=0|RefuseReason=图片不正确";
+//		String strPfx = "E://merchant.pfx";
+//		String strPassword = "test";
+//		PrivateKey pk=GetPrivateKey.GetPvkformPfx(strPfx, strPassword);
+//		String signature=GetPrivateKey.signData(pk, plain, alg);
+//		url=url+"plain="+plain+"&signature="+signature;
+//		String data="{\"corp_id\":\"002c1S\",\"userid\":\"00000100000000IlgLZV0002\"}";
+		String data="corp_id=002c1S&userid=00000100000000IlgLZV0002";
+		String returnData=sendRequestHttp(url, data);
 		System.out.println(returnData);
 	}
 

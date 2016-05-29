@@ -15,7 +15,7 @@ public class MyJob implements Job {
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		System.out.println(sdf.format(new Date())+" Ö´ÐÐÖÐ¡­¡­");
+		System.out.println(sdf.format(new Date())+" I LOVE ZHANGXP");
 	}
 
 }
