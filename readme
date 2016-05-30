@@ -1,0 +1,9 @@
+1.BASE64  	base64消息加密
+2.JDKtask 	JDK自带的任务处理
+3.MD 		包括MD5加密
+4.memcache	memcache缓存的操作
+5.mongo 	mongo数据库的操作
+6.quartz 	定时任务
+7.redis		redis数据库的操作
+8.util		其中包括，发送http请求，获取私钥，unicode编码
+9.utils		序列化，反序列化
